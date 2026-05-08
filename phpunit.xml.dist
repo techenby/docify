@@ -17,9 +17,8 @@
     </include>
   </coverage>
   <testsuites>
-    <testsuite name="Tighten Test Suite">
+    <testsuite name="Test Suite">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>
-

@@ -1,18 +1,17 @@
-# :package_fullname
+# docify-for-laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/tightenco/:package_name.svg?style=flat-square)](https://packagist.org/packages/tightenco/:package_name)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tighten/:package_name/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/tighten/:package_name/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/techenby/docify-for-laravel.svg?style=flat-square)](https://packagist.org/packages/techenby/docify-for-laravel)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tighten/docify-for-laravel/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/tighten/docify-for-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
 
-**Note:** Replace ```:author_name``` ```:author_username``` ```:author_email``` ```:package_name``` ```:package_description``` ```:package_php_namespace``` with their correct values in [README.md](README.md), [composer.json](composer.json), and all three files under `src/`, then delete this line.
 
-:package_description
+Add documentation viewer to your Laravel and Livewire application
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require tightenco/:package_name
+composer require techenby/docify-for-laravel
 ```
 
 ## Usage
@@ -33,11 +32,11 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security
 
-If you discover any security related issues, please email hello@tighten.co instead of using the issue tracker.
+If you discover any security related issues, please email andy@techenby.com instead of using the issue tracker.
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Andy Swick](https://github.com/techenby)
 - [All Contributors](../../contributors)
 
 ## License
