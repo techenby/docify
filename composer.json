@@ -1,15 +1,15 @@
 {
-    "name": "techenby/docify-for-laravel",
+    "name": "techenby/docify",
     "description": "Add documentation viewer to your Laravel and Livewire application",
     "keywords": [
         "techenby",
-        "docify-for-laravel",
+        "docify",
         "documentation",
         "laravel",
         "livewire",
         "php"
     ],
-    "homepage": "https://github.com/tighten/docify-for-laravel",
+    "homepage": "https://github.com/tighten/docify",
     "license": "MIT",
     "authors": [
         {
@@ -29,7 +29,8 @@
         "tempest/highlight": "^2.22"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "pestphp/pest": "^3.8.5|^4.6.2",
+        "orchestra/testbench": "^9.0|^10.9.0|^11.1",
         "tightenco/duster": "^1.0"
     },
     "autoload": {
@@ -46,7 +47,10 @@
         "test": "vendor/bin/phpunit"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {

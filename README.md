@@ -1,7 +1,7 @@
-# docify-for-laravel
+# Docify for Laravel and Livewire
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/techenby/docify-for-laravel.svg?style=flat-square)](https://packagist.org/packages/techenby/docify-for-laravel)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tighten/docify-for-laravel/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/tighten/docify-for-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/techenby/docify.svg?style=flat-square)](https://packagist.org/packages/techenby/docify)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tighten/docify/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/tighten/docify/actions?query=workflow%3Arun-tests+branch%3Amain)
 
 
 Add documentation viewer to your Laravel and Livewire application
@@ -11,7 +11,7 @@ Add documentation viewer to your Laravel and Livewire application
 You can install the package via composer:
 
 ```bash
-composer require techenby/docify-for-laravel
+composer require techenby/docify
 ```
 
 ## Usage
