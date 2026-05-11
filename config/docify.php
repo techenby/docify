@@ -7,4 +7,5 @@ return [
     'route_name' => 'docs',
     'prefix' => 'docify',
     'folder' => './docs',
+    'environments' => ['local'],
 ];

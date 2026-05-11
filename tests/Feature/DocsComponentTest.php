@@ -3,11 +3,15 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TechEnby\Docify\Http\Middleware\EnsureDocifyCanBeViewed;
 
 beforeEach(function (): void {
     config()->set('app.key', 'base64:' . base64_encode(str_repeat('a', 32)));
     config()->set('docify.folder', './docs-test');
+    config()->set('docify.environments', ['testing']);
 
     File::deleteDirectory(base_path('docs-test'));
     File::ensureDirectoryExists(base_path('docs-test/guides'));
@@ -93,4 +97,33 @@ test('returns a not found response for missing pages', function (): void {
     File::put(base_path('docs-test/index.md'), '# Welcome');
 
     $this->get('/docs/missing')->assertNotFound();
+});
+
+test('registers the environment guard on the docs route', function (): void {
+    expect(Route::getRoutes()->getByName('docs')->gatherMiddleware())
+        ->toContain(EnsureDocifyCanBeViewed::class);
+});
+
+test('only allows configured environments to view docs', function (): void {
+    $middleware = new EnsureDocifyCanBeViewed;
+    $request = request();
+    $next = fn () => response('allowed');
+
+    $this->app['env'] = 'local';
+    config()->set('docify.environments', ['local']);
+
+    expect($middleware->handle($request, $next)->getContent())->toBe('allowed');
+
+    $this->app['env'] = 'production';
+
+    $middleware->handle($request, $next);
+})->throws(NotFoundHttpException::class);
+
+test('allows users to configure additional docs environments', function (): void {
+    $middleware = new EnsureDocifyCanBeViewed;
+
+    $this->app['env'] = 'staging';
+    config()->set('docify.environments', ['local', 'staging']);
+
+    expect($middleware->handle(request(), fn () => response('allowed'))->getContent())->toBe('allowed');
 });

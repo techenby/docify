@@ -31,8 +31,12 @@ php artisan vendor:publish
 
 ## Usage
 
-```
-// Usage code and examples here
+By default, Docify is only viewable when your Laravel application is running in the `local` environment.
+
+To allow additional environments, publish the config file and update `environments`:
+
+```php
+'environments' => ['local', 'staging'],
 ```
 
 ## Testing
