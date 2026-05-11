@@ -4,7 +4,7 @@
 </picture>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/techenby/docify.svg?style=flat-square)](https://packagist.org/packages/techenby/docify)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tighten/docify/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/tighten/docify/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/techenby/docify/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/techenby/docify/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/techenby/docify.svg?style=flat-square)](https://packagist.org/packages/techenby/docify)
 
 A simple markdown viewer for TALL stack applications
