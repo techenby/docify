@@ -40,11 +40,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tighten\\Docify\\Tests\\": "tests"
+            "TechEnby\\Docify\\Tests\\": "tests"
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/pest"
     },
     "config": {
         "sort-packages": true,
