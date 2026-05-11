@@ -51,8 +51,6 @@ new #[Layout('docify::docs-layout')] class extends Component
 
             return sprintf($editors[$editor] ?? $editors['phpstorm'], $this->path);
         }
-
-        return 'https://github.com/Vaniam-Group/monorepo/edit/main/docs/'.$this->page.'.md';
     }
 
     /** @return array<string, list<array{path: string, href: string, label: string, directory: string|null, order: int}>> */
