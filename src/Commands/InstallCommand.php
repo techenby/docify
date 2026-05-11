@@ -16,21 +16,21 @@ class InstallCommand extends Command
     public function handle(Filesystem $files): int
     {
         $docsPath = $this->docsPath();
-        $indexPath = $docsPath.DIRECTORY_SEPARATOR.'index.md';
+        $indexPath = $docsPath . DIRECTORY_SEPARATOR . 'index.md';
 
         $files->ensureDirectoryExists($docsPath);
 
         if ($files->exists($indexPath) && ! $this->option('force')) {
             $this->components->warn('Docify documentation already exists.');
-            $this->line('Use --force to overwrite '.$indexPath.'.');
+            $this->line('Use --force to overwrite ' . $indexPath . '.');
 
             return self::SUCCESS;
         }
 
-        $files->copy(__DIR__.'/../../resources/docs/docify.md', $indexPath);
+        $files->copy(__DIR__ . '/../../resources/docs/docify.md', $indexPath);
 
         $this->components->info('Docify installed successfully.');
-        $this->line('Documentation created at '.$indexPath.'.');
+        $this->line('Documentation created at ' . $indexPath . '.');
 
         return self::SUCCESS;
     }

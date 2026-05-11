@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 
 beforeEach(function (): void {
-    config()->set('app.key', 'base64:'.base64_encode(str_repeat('a', 32)));
+    config()->set('app.key', 'base64:' . base64_encode(str_repeat('a', 32)));
     config()->set('docify.folder', './docs-test');
 
     File::deleteDirectory(base_path('docs-test'));
