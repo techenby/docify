@@ -41,6 +41,10 @@ php artisan vendor:publish
 composer test
 ```
 
+## Releasing
+
+Please see [RELEASE.md](RELEASE.md) for the release process.
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.

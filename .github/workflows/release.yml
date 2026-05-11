@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - '8.4'
+          - '8.5'
+        laravel:
+          - '11.*'
+          - '12.*'
+          - '13.*'
+        include:
+          - laravel: '11.*'
+            testbench: '9.*'
+          - laravel: '12.*'
+            testbench: '10.*'
+          - laravel: '13.*'
+            testbench: '11.*'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-release-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-release-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-
+            ${{ runner.os }}-release-php-${{ matrix.php }}-
+
+      - name: Validate Composer package
+        run: composer validate
+
+      - name: Install dependencies
+        run: |
+          composer require \
+            "illuminate/console:${{ matrix.laravel }}" \
+            "illuminate/support:${{ matrix.laravel }}" \
+            --no-interaction \
+            --no-progress \
+            --no-update
+          composer require --dev \
+            "orchestra/testbench:${{ matrix.testbench }}" \
+            --no-interaction \
+            --no-progress \
+            --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction --no-progress
+
+      - name: Run tests
+        run: composer test
+
+  duster:
+    name: Duster lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Duster Lint
+        uses: tighten/duster-action@v3
+        with:
+          args: lint
+
+  release:
+    name: Create GitHub release
+
+    runs-on: ubuntu-latest
+
+    needs:
+      - tests
+      - duster
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
