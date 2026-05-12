@@ -39,6 +39,12 @@ To allow additional environments, publish the config file and update `environmen
 'environments' => ['local', 'staging'],
 ```
 
+Set the local editor used by the Edit link with `DOCIFY_EDITOR`. If it is not set, Docify will also check `DEBUGBAR_EDITOR` and `IGNITION_EDITOR` before defaulting to VS Code.
+
+```dotenv
+DOCIFY_EDITOR=cursor
+```
+
 ## Testing
 
 ```bash

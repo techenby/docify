@@ -19,6 +19,7 @@ beforeEach(function (): void {
 
 afterEach(function (): void {
     File::deleteDirectory(base_path('docs-test'));
+    File::deleteDirectory(base_path('docs-test-private'));
 });
 
 test('renders the requested markdown page', function (): void {
@@ -97,6 +98,46 @@ test('returns a not found response for missing pages', function (): void {
     File::put(base_path('docs-test/index.md'), '# Welcome');
 
     $this->get('/docs/missing')->assertNotFound();
+});
+
+test('renders docs in configured non local environments without an edit link', function (): void {
+    $this->app['env'] = 'staging';
+    config()->set('docify.environments', ['local', 'staging']);
+
+    File::put(base_path('docs-test/index.md'), '# Package Docs');
+
+    Livewire::test('docify::docs')
+        ->assertSee('Package Docs')
+        ->assertDontSee('Edit');
+});
+
+test('uses the configured docify editor for local edit links', function (): void {
+    $this->app['env'] = 'local';
+    config()->set('docify.editor', 'cursor');
+
+    File::put(base_path('docs-test/index.md'), '# Package Docs');
+
+    expect(Livewire::test('docify::docs')->get('editUrl'))
+        ->toBe('cursor://file/' . realpath(base_path('docs-test/index.md')));
+});
+
+test('falls back to vscode for unknown local editors', function (): void {
+    $this->app['env'] = 'local';
+    config()->set('docify.editor', 'unknown');
+
+    File::put(base_path('docs-test/index.md'), '# Package Docs');
+
+    expect(Livewire::test('docify::docs')->get('editUrl'))
+        ->toBe('vscode://file/' . realpath(base_path('docs-test/index.md')));
+});
+
+test('does not allow traversing outside the configured docs folder', function (): void {
+    File::ensureDirectoryExists(base_path('docs-test-private'));
+    File::put(base_path('docs-test/index.md'), '# Public Docs');
+    File::put(base_path('docs-test-private/secret.md'), '# Secret Docs');
+
+    $this->get('/docs/%2E%2E%2Fdocs-test-private%2Fsecret')
+        ->assertNotFound();
 });
 
 test('registers the environment guard on the docs route', function (): void {

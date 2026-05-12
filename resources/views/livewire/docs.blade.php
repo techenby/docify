@@ -26,31 +26,38 @@ new #[Layout('docify::docs-layout')] class extends Component
     {
         $this->page = trim($page ?: 'index', '/') ?: 'index';
 
-        $docsPath = base_path(trim(config('docify.folder'), './'));
-        $resolvedPath = realpath(sprintf('%s/%s.md', $docsPath, $this->page));
+        $docsPath = realpath(base_path(trim(config('docify.folder'), './')));
+        $resolvedPath = $docsPath
+            ? realpath(sprintf('%s/%s.md', $docsPath, $this->page))
+            : false;
 
-        abort_unless($resolvedPath && str_starts_with($resolvedPath, $docsPath), 404);
+        abort_unless(
+            $docsPath
+            && $resolvedPath
+            && str_starts_with($resolvedPath, $docsPath . DIRECTORY_SEPARATOR),
+            404
+        );
 
         $this->path = $resolvedPath;
     }
 
     #[Computed]
-    public function editUrl(): string
+    public function editUrl(): ?string
     {
-        if (App::isLocal()) {
-            $editors = [
-                'vscode' => 'vscode://file/%s',
-                'cursor' => 'cursor://file/%s',
-                'phpstorm' => 'phpstorm://open?file=%s',
-                'sublime' => 'subl://open?url=file://%s',
-                'atom' => 'atom://open?url=file://%s',
-                'zed' => 'zed://open?path=%s',
-            ];
-
-            $editor = config()->string('app.editor', 'vscode');
-
-            return sprintf($editors[$editor] ?? $editors['phpstorm'], $this->path);
+        if (! App::isLocal()) {
+            return null;
         }
+
+        $editor = config()->string('docify.editor', 'vscode');
+
+        return match ($editor) {
+            'cursor' => 'cursor://file/' . $this->path,
+            'phpstorm' => 'phpstorm://open?file=' . $this->path,
+            'sublime' => 'subl://open?url=file://' . $this->path,
+            'atom' => 'atom://open?url=file://' . $this->path,
+            'zed' => 'zed://open?path=' . $this->path,
+            default => 'vscode://file/' . $this->path,
+        };
     }
 
     /** @return array<string, list<array{path: string, href: string, label: string, directory: string|null, order: int}>> */
@@ -152,7 +159,10 @@ new #[Layout('docify::docs-layout')] class extends Component
 </x-slot:sidebar>
 
 <div class="relative w-full">
-    <flux:button icon="pencil" size="sm" class="!absolute top-0 right-0" :href="$this->editUrl" target="_window">Edit</flux:button>
+    @if ($this->editUrl)
+        <flux:button icon="pencil" size="sm" class="!absolute top-0 right-0" :href="$this->editUrl" target="_window">Edit</flux:button>
+    @endif
+
     <article class="prose prose-zinc max-w-none dark:prose-invert">
         {!! $this->content !!}
     </article>
